@@ -7,7 +7,7 @@
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Se                                                              t this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 }
@@ -38,11 +38,49 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent)) {
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Jump);
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
+		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Shoot);
+		EnhancedInputComponent->BindAction(ReloadAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Reload);
+
 	}
 }
 
 void APlayerCharacter::Move(const FInputActionValue& Value)
 {
-	//move based on forward & Y, and Right & X
+	FVector2D MovementVector = Value.Get<FVector2D>();
+
+	if (Controller != nullptr)
+	{
+		AddMovementInput(GetActorForwardVector(), MovementVector.Y);
+		AddMovementInput(GetActorRightVector(), MovementVector.X);
+	}
+}
+
+void APlayerCharacter::Look(const FInputActionValue& Value)
+{
+	
+	FVector2D LookAxisVector = Value.Get<FVector2D>();
+
+	if (Controller != nullptr)
+	{
+		AddControllerYawInput(LookAxisVector.X);
+		AddControllerPitchInput(LookAxisVector.Y);
+	}
+}
+
+void APlayerCharacter::Jump(const FInputActionValue& Value)
+{
+	UE_LOG(LogTemp, Warning, TEXT("You Pressed a jump button"));
+}
+
+void APlayerCharacter::Shoot(const FInputActionValue& Value)
+{
+	UE_LOG(LogTemp, Warning, TEXT("You Pressed a shoot button"));
+}
+
+void APlayerCharacter::Reload(const FInputActionValue& Value)
+{
+	UE_LOG(LogTemp, Warning, TEXT("You Pressed a reload button"));
 }
 
