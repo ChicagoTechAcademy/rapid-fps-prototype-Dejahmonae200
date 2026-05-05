@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
 #include "FPSProjectile.generated.h"
 
@@ -11,7 +12,7 @@ UCLASS()
 class RAPIDFPS_API AFPSProjectile : public AActor
 {
 	GENERATED_BODY()
-	
+
 public:	
 	// Sets default values for this actor's properties
 	AFPSProjectile();
@@ -27,4 +28,15 @@ public:
 	// Sphere collision component.
 	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
 	USphereComponent* CollisionComponent;
+
+	// Projectile movement component.
+	UPROPERTY(VisibleAnywhere, Category = Movement)
+	UProjectileMovementComponent* ProjectileMovementComponent;
+
+	// Function that initializes the projectile's velocity in the shoot direction.
+	void FireInDirection(const FVector& ShootDirection);
+	// Function that is called when the projectile hits something.
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
+
 };

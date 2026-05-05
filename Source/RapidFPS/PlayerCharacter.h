@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "InputMappingContext.h"
 #include "InputAction.h"
+#include "FPSProjectile.h"
 #include "PlayerCharacter.generated.h"
 
 
@@ -18,7 +19,13 @@ public:
 	// Sets default values for this character's properties
 	APlayerCharacter();
 
+
 protected:
+
+	// Projectile class to spawn.
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	TSubclassOf<class AFPSProjectile> ProjectileClass;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -29,14 +36,14 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	// Gun muzzle offset from the camera location.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	FVector MuzzleOffset;
+
 	// In your class definition:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputMappingContext* DefaultMappingContext;
-
-
-//jumplookreload
 	
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	UInputAction* MoveAction;
 
